@@ -31,8 +31,12 @@ namespace ex2.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([Bind("Id,Name,Server,Last,LastDated")] Contact contact)
+        public async Task<IActionResult> Create([Bind("Id,Name,Server")] Container1 container)
         {
+            Contact contact = new Contact();
+            contact.Id = container.Id;
+            contact.Name = container.Name;
+            contact.Server = container.Server;
             Chat chat = new Chat();
             int id;
             if (_context.Chat.Count() == 0)
@@ -153,8 +157,9 @@ namespace ex2.Controllers
         }
 
         [HttpPost("{id}/messages")]
-        public async Task<IActionResult> sendM(string id, [Bind("Content")] Message message)
+        public async Task<IActionResult> sendM(string id, [Bind("Content")] Container content)
         {
+            Message message = new();
             if (id == null || _context.Contact == null)
             {
                 return NotFound();
@@ -179,9 +184,10 @@ namespace ex2.Controllers
             {
                 idm = _context.Message.Max(c => c.Id) + 1;
             }
+            message.Content = content.Content;
             message.Id = idm;
             message.Created = DateTime.UtcNow;
-            message.Sent = true;
+            message.Sent = false;
             message.ChatId = chat.Id;
             _context.Add(message);
             contact.Last = message.Content;
@@ -224,17 +230,14 @@ namespace ex2.Controllers
         }
 
         [HttpPut("{id1}/messages/{id2}")]
-        public async Task<IActionResult> editM(string id1, int id2, [Bind("Id,Content,Created,sent")] Message message)
+        public async Task<IActionResult> editM(string id1, int id2, [Bind("Content")] Container content)
         {
+            
             if (id1 == null || _context.Contact == null)
             {
                 return NotFound();
             }
-            if(id2 != message.Id)
-            {
-                return NotFound();
 
-            }
             var contact = await _context.Contact.FirstOrDefaultAsync(m => m.Id == id1);
             if (contact == null)
             {
@@ -245,11 +248,16 @@ namespace ex2.Controllers
             {
                 return NotFound();
             }
-            if (message.ChatId != chat.Id)
+            var message = await _context.Message.FirstOrDefaultAsync(m => m.Id == id2);
+            if (message == null)
             {
                 return NotFound();
             }
-
+            if(message.ChatId != chat.Id)
+            {
+                return NotFound();
+            }
+            message.Content = content.Content;
             _context.Update(message);
             await _context.SaveChangesAsync();
 
