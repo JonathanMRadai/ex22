@@ -12,7 +12,7 @@ using ex22.Data;
 namespace ex22.Migrations
 {
     [DbContext(typeof(ex22Context))]
-    [Migration("20220529200417_Init")]
+    [Migration("20220601133030_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -66,22 +66,18 @@ namespace ex22.Migrations
 
             modelBuilder.Entity("ex22.Invitation", b =>
                 {
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
+                    b.Property<string>("From")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("from")
+                    b.Property<string>("Server")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("server")
+                    b.Property<string>("To")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("to")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
+                    b.HasKey("From");
 
                     b.ToTable("Invitation");
                 });
@@ -111,14 +107,10 @@ namespace ex22.Migrations
 
             modelBuilder.Entity("ex22.Transfer", b =>
                 {
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
+                    b.Property<string>("From")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Content")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("From")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -126,7 +118,7 @@ namespace ex22.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("From");
 
                     b.ToTable("Transfer");
                 });

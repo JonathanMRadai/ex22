@@ -7,5 +7,6 @@ namespace ex22
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int Id { get; set; }
         public Contact Contact { get; set; }
+        
     }
 }

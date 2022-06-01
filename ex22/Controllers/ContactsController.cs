@@ -33,11 +33,18 @@ namespace ex2.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([Bind("Id,Name,Server")] Container1 container)
         {
+            
+            var c = await _context.Chat.FirstOrDefaultAsync(m => m.Contact.Id == container.Id);
+            if(c != null)
+            {
+                return NotFound();
+            }
             Contact contact = new Contact();
             contact.Id = container.Id;
             contact.Name = container.Name;
             contact.Server = container.Server;
-            Chat chat = new Chat();
+            contact.Last = "";
+            Chat chat = new();
             int id;
             if (_context.Chat.Count() == 0)
             {
@@ -75,17 +82,20 @@ namespace ex2.Controllers
 
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Edit(string id, [Bind("Id,Name,Server,Last,LastDated")] Contact contact)
+        public async Task<IActionResult> Edit(string id, [Bind("Name,Server")] Container4 data)
         {
-            if (id != contact.Id)
+            var contact = await _context.Contact.FirstOrDefaultAsync(m => m.Id == id);
+            if(contact == null)
             {
-                return BadRequest();
+                return NotFound();
             }
 
             if (ModelState.IsValid)
             {
                 try
                 {
+                    contact.Name = data.Name;
+                    contact.Server = data.Server;
                     _context.Update(contact);
                     await _context.SaveChangesAsync();
                 }
@@ -187,12 +197,9 @@ namespace ex2.Controllers
             message.Content = content.Content;
             message.Id = idm;
             message.Created = DateTime.UtcNow;
-            message.Sent = false;
+            message.Sent = true;
             message.ChatId = chat.Id;
             _context.Add(message);
-            contact.Last = message.Content;
-            contact.LastDate = message.Created;
-            _context.Update(contact);
             _context.SaveChanges();
 
             return Ok();

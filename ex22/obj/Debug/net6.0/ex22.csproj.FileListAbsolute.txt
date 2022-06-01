@@ -261,3 +261,4 @@ C:\Users\USER\OneDrive\AP2project\ex22\ex22\obj\Debug\net6.0\refint\ex22.dll
 C:\Users\USER\OneDrive\AP2project\ex22\ex22\obj\Debug\net6.0\ex22.pdb
 C:\Users\USER\OneDrive\AP2project\ex22\ex22\obj\Debug\net6.0\ex22.genruntimeconfig.cache
 C:\Users\USER\OneDrive\AP2project\ex22\ex22\obj\Debug\net6.0\ref\ex22.dll
+C:\Users\USER\OneDrive\AP2project\ex22\ex22\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll

@@ -20,7 +20,5 @@ namespace ex22.Data
         public DbSet<ex22.Invitation>? Invitation { get; set; }
         public DbSet<ex22.Transfer>? Transfer { get; set; }
 
-
-
     }
 }

@@ -28,14 +28,13 @@ namespace ex22.Migrations
                 name: "Invitation",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
-                    from = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    to = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    server = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    From = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    To = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Server = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Invitation", x => x.Id);
+                    table.PrimaryKey("PK_Invitation", x => x.From);
                 });
 
             migrationBuilder.CreateTable(
@@ -57,14 +56,13 @@ namespace ex22.Migrations
                 name: "Transfer",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
-                    From = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    From = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     To = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Content = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Transfer", x => x.Id);
+                    table.PrimaryKey("PK_Transfer", x => x.From);
                 });
 
             migrationBuilder.CreateTable(

@@ -22,11 +22,44 @@ namespace ex22.Controllers
             _context = context;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Index()
-        {
-            return Json(await _context.Invitation.ToListAsync());
+        [HttpPost]
+        public async Task<IActionResult> InvitationAsync([Bind("From,To,Server")] Invitation invitation)
+        { 
+            if(ex22.User.Id != invitation.To)
+            {
+                return NotFound();
+            }
+            var c = await _context.Chat.FirstOrDefaultAsync(m => m.Contact.Id == invitation.From);
+            if (c != null)
+            {
+                return NotFound();
+            }
+            Contact contact = new Contact();
+            contact.Id = invitation.From;
+            contact.Name = invitation.From;
+            contact.Server = invitation.Server;
+            contact.Last = "";
+ 
+            Chat chat = new();
 
+ 
+            int id;
+            if (_context.Chat.Count() == 0)
+            {
+                id = 0;
+            }
+            else
+            {
+                id = _context.Chat.Max(c => c.Id) + 1;
+            }
+            chat.Id = id;
+            chat.Contact = contact;
+            _context.Add(chat);
+            _context.Add(contact);
+            await _context.SaveChangesAsync();
+            return StatusCode(201);
+
+            return Ok();
         }
 
     }
